@@ -27,7 +27,7 @@ const unsigned int outPort = 1234;
 // nombre de piezo devant être lu
 int nbSensors = 2;
 
-// threshold : valeurs seuils à laquel les capteurs doivent envoyer une valeur. (un par type de capteur)
+// threshold : valeurs seuils à laquel les capteurs doivent envoyer une valeur. (une par type de capteur)
 const int threshold[] = {300,500};
 
 int customDelay = 20;
@@ -64,8 +64,6 @@ void sendOSC(int sensorReading, int pin){
 }
 
 void sendAnalog(int pin){
-  int sensorReading = analogRead(pin);
-  if ( sensorReading > threshold[pin]){
     Serial.print( "switch");
     Serial.print(pin);
     Serial.print( ":");
@@ -73,7 +71,6 @@ void sendAnalog(int pin){
     if (isOSCmode) {
       sendOSC(sensorReading, pin);
     }
-  };
 }
 
 void setup() {
@@ -91,7 +88,10 @@ void setup() {
 
 void loop(){
   for(int i=0; i<nbSensors; i++){
-    sendAnalog(i);
+    int sensorReading = analogRead(pin);
+    if ( sensorReading > threshold[pin]){
+      sendAnalog(i);
+    }
   }
    delay(customDelay);
 }
