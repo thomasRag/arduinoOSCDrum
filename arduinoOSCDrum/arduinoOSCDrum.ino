@@ -29,15 +29,14 @@ const unsigned int outPort = 1234;
 int nbSensors = 2;
 
 // threshold : valeurs seuils à laquel les capteurs doivent envoyer une valeur. (une par type de capteur)
-const int threshold[] = {300,500};
+const int threshold[] = {200,220};
 
-int customDelay = 20;
+int customDelay = 200;
 
 /*
   CONFIGURATION PROGRAMME (à adapter)
 */
 int triggerable[] = {};
-int sensorReading = 0;
 
 void  initializeOSC(){
   Serial.println("OSC test");
@@ -59,22 +58,22 @@ void  initializeOSC(){
   Udp.begin(8888);
 }
 
-void sendOSC(int sensorReading, int pin){
+void sendOSC(int sensorValue, int pin){
   OSCMessage msg("/switch/" + pin);
-  msg.add((int32_t)sensorReading);
+  msg.add((int32_t)sensorValue);
   Udp.beginPacket(outIp, outPort);
   msg.send(Udp); // send the bytes to the SLIP stream
   Udp.endPacket(); // mark the end of the OSC Packet
   msg.empty(); // free space occupied by message
 }
 
-void sendAnalog(int pin){
+void sendAnalog(int pin, int sensorValue){
     Serial.print( "switch");
     Serial.print(pin);
     Serial.print( ":");
-    Serial.println(sensorReading);
+    Serial.println(sensorValue);
     if (isOSCmode) {
-      sendOSC(sensorReading, pin);
+      sendOSC(sensorValue, pin);
     }
 }
 
@@ -88,15 +87,17 @@ void setup() {
   for(int i=0; i<nbSensors; i++){
     triggerable[i]= 1;
   }
+  Serial.print("threshold2:");
+  Serial.println(threshold[0]); 
 }
 
 
 void loop(){
   for(int i=0; i<nbSensors; i++){
-    sensorReading = analogRead(i);
+    int sensorReading = analogRead(i);
     if ( sensorReading > threshold[i]){
       if (triggerable[i] == 1){
-        sendAnalog(i);
+        sendAnalog(i, sensorReading);
         triggerable[i] = 0;
       }
     }
