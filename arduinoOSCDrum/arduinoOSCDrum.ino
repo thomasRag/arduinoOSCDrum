@@ -11,7 +11,7 @@ EthernetUDP Udp;
 */
 
 // mode osc ou serial pour les test
-const int isOSCmode = 1; // mode 0: serial, mode 1: osc
+const int isOSCmode = 0; // mode 0: serial, mode 1: osc
 
 // Arduino IP et mac adress
 IPAddress ip(192, 168, 0, 7);
@@ -35,7 +35,7 @@ int customDelay = 20;
 /*
   CONFIGURATION PROGRAMME (à adapter)
 */
-int triggerable[];
+int triggerable[] = {};
 
 void  initializeOSC(){
   Serial.println("OSC test");
@@ -70,7 +70,7 @@ void sendAnalog(int pin){
     Serial.print(pin);
     Serial.print( ":");
     Serial.println(sensorReading);
-    if (isOSCmode) {
+    if (isOSCmode == 1) {
       sendOSC(sensorReading, pin);
     }
   };
