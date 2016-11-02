@@ -5,12 +5,14 @@
 
 EthernetUDP Udp;
 
-// define what will be the communication mode
-const int isOSCmode = 0; // mode 0: serial, mode 1: osc
 
 /*
-  CONFIGURATION ARDUINO
+  CONFIGURATION ARDUINO (à adapter)
 */
+
+// mode osc ou serial pour les test
+const int isOSCmode = 1; // mode 0: serial, mode 1: osc
+
 // Arduino IP et mac adress
 IPAddress ip(192, 168, 0, 7);
 byte mac[] = { 0xDE, 0xAD, 0xAE, 0xEF, 0xFE, 0xED };
@@ -20,15 +22,19 @@ IPAddress outIp(10, 0, 1, 13);
 const unsigned int outPort = 1234;
 
 /*
-  CONFIGURATION CAPTEUR
+  CONFIGURATION CAPTEUR (à adapter)
 */
 // nombre de piezo devant être lu
 int nbSensors = 2;
 
-// threshold : valeurs seuils à laquel les capteurs doivent envoyer une valeur.
+// threshold : valeurs seuils à laquel les capteurs doivent envoyer une valeur. (un par type de capteur)
 const int threshold[] = {300,500};
 
+int customDelay = 20;
 
+/*
+  CONFIGURATION PROGRAMME (à adapter)
+*/
 int triggerable[];
 
 void  initializeOSC(){
@@ -60,7 +66,6 @@ void sendOSC(int sensorReading, int pin){
 void sendAnalog(int pin){
   int sensorReading = analogRead(pin);
   if ( sensorReading > threshold[pin]){
-    triggerable[i] = 1;
     Serial.print( "switch");
     Serial.print(pin);
     Serial.print( ":");
@@ -88,7 +93,7 @@ void loop(){
   for(int i=0; i<nbSensors; i++){
     sendAnalog(i);
   }
-   delay(100);
+   delay(customDelay);
 }
 
 
