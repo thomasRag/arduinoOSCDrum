@@ -81,7 +81,7 @@ void setup() {
   Serial.print("nbSensors:");
   Serial.println(nbSensors);
   for(int i=0; i<nbSensors; i++){
-    triggerable[i]= 0;
+    triggerable[i]= 1;
   }
 }
 
@@ -90,7 +90,13 @@ void loop(){
   for(int i=0; i<nbSensors; i++){
     int sensorReading = analogRead(pin);
     if ( sensorReading > threshold[pin]){
-      sendAnalog(i);
+      if (triggerable[i] == 1){
+        sendAnalog(i);
+        triggerable[i] = 0;
+      }
+    }
+    else {
+      triggerable[i] = 1;
     }
   }
    delay(customDelay);
