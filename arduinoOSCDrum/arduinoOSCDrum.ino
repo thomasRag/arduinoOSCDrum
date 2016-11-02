@@ -34,7 +34,7 @@ const int threshold[] = {300,500};
 int customDelay = 20;
 
 /*
-  CONFIGURATION PROGRAMME (à adapter)
+  CONFIGURATION PROGRAMME (do not change)
 */
 int triggerable[] = {};
 
