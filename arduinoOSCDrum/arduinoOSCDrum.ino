@@ -37,6 +37,7 @@ int customDelay = 20;
   CONFIGURATION PROGRAMME (à adapter)
 */
 int triggerable[] = {};
+int sensorReading = 0;
 
 void  initializeOSC(){
   Serial.println("OSC test");
@@ -92,8 +93,8 @@ void setup() {
 
 void loop(){
   for(int i=0; i<nbSensors; i++){
-    int sensorReading = analogRead(pin);
-    if ( sensorReading > threshold[pin]){
+    sensorReading = analogRead(i);
+    if ( sensorReading > threshold[i]){
       if (triggerable[i] == 1){
         sendAnalog(i);
         triggerable[i] = 0;
