@@ -18,6 +18,7 @@ IPAddress ip(192, 168, 0, 7);
 byte mac[] = { 0xDE, 0xAD, 0xAE, 0xEF, 0xFE, 0xED };
 
 // isadora IP et port
+int isDHCP = 0;
 IPAddress outIp(10, 0, 1, 13);
 const unsigned int outPort = 1234;
 
@@ -39,10 +40,13 @@ int triggerable[] = {};
 
 void  initializeOSC(){
   Serial.println("OSC test");
-  if (Ethernet.begin(mac, ip) == 0) {
+  if (isDHCP == 1 && Ethernet.begin(mac) == 0) {
     Serial.println("Failed to configure Ethernet using DHCP");
     // no point in carrying on, so do nothing forevermore:
     while(true);
+  }
+  else {
+    Ethernet.begin(mac, ip);
   }
   // print your local IP address:
   Serial.print("Arduino IP address: ");
@@ -70,7 +74,7 @@ void sendAnalog(int pin){
     Serial.print(pin);
     Serial.print( ":");
     Serial.println(sensorReading);
-    if (isOSCmode == 1) {
+    if (isOSCmode) {
       sendOSC(sensorReading, pin);
     }
   };
