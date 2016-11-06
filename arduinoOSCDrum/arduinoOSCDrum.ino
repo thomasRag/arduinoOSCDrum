@@ -21,7 +21,6 @@ byte mac[] = { 0xDE, 0xAD, 0xAE, 0xEF, 0xFE, 0xED };
 int isDHCP = 0;
 IPAddress outIp(10, 0, 1, 13);
 const unsigned int outPort = 1234;
-
 /*
   CONFIGURATION CAPTEUR (à adapter)
 */
@@ -59,9 +58,25 @@ void  initializeOSC(){
 }
 
 void sendOSC(int sensorReading, int pin){
-  String switchHeader = "/switch/";
-  String switchNumHeader = switchHeader + pin;
-  OSCMessage msg(switchNumHeader);
+  OSCMessage msg;
+  if (pin == 0){
+    msg.setAddress("/switch/0");
+  }
+  if (pin == 1){
+    msg.setAddress("/switch/1");
+  }
+  if (pin == 2){
+    msg.setAddress("/switch/2");
+  }
+  if (pin == 3){
+    msg.setAddress("/switch/3");
+  }
+  if (pin == 4){
+    msg.setAddress("/switch/4");
+  }
+  if (pin == 5){
+    msg.setAddress("/switch/5");
+  }
   msg.add((int32_t)sensorReading);
   Udp.beginPacket(outIp, outPort);
   msg.send(Udp); // send the bytes to the SLIP stream
