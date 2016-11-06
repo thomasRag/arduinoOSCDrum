@@ -59,7 +59,9 @@ void  initializeOSC(){
 }
 
 void sendOSC(int sensorReading, int pin){
-  OSCMessage msg("/switch/" + pin);
+  String switchHeader = "/switch/";
+  String switchNumHeader = switchHeader + pin;
+  OSCMessage msg(switchNumHeader);
   msg.add((int32_t)sensorReading);
   Udp.beginPacket(outIp, outPort);
   msg.send(Udp); // send the bytes to the SLIP stream
