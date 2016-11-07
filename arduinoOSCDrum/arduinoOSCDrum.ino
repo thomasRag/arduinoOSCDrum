@@ -19,13 +19,13 @@ byte mac[] = { 0xDE, 0xAD, 0xAE, 0xEF, 0xFE, 0xED };
 
 // isadora IP et port
 int isDHCP = 0;
-IPAddress outIp(10, 0, 1, 13);
+IPAddress outIp(192, 168, 0, 13);
 const unsigned int outPort = 1234;
 /*
   CONFIGURATION CAPTEUR (à adapter)
 */
 // nombre de piezo devant être lu
-int nbSensors = 2;
+int nbSensors = 6;
 
 // threshold : valeurs seuils à laquel les capteurs doivent envoyer une valeur. (un par type de capteur)
 const int threshold[] = {300,500};
@@ -58,30 +58,40 @@ void  initializeOSC(){
 }
 
 void sendOSC(int sensorReading, int pin){
-  OSCMessage msg;
+  
   if (pin == 0){
-    msg.setAddress("/switch/0");
+    OSCMessage msg("/switch/0"); 
+    msg.add((int32_t)sensorReading);
+    Udp.beginPacket(outIp, outPort);
+    msg.send(Udp); // send the bytes to the SLIP stream
+    Udp.endPacket(); // mark the end of the OSC Packet
+    msg.empty(); // free space occupied by message
   }
   if (pin == 1){
-    msg.setAddress("/switch/1");
+    OSCMessage msg("/switch/1");
+    msg.add((int32_t)sensorReading);
+    Udp.beginPacket(outIp, outPort);
+    msg.send(Udp); // send the bytes to the SLIP stream
+    Udp.endPacket(); // mark the end of the OSC Packet
+    msg.empty(); // free space occupied by message
   }
   if (pin == 2){
-    msg.setAddress("/switch/2");
+    OSCMessage msg("/switch/2");
+    msg.add((int32_t)sensorReading);
+    Udp.beginPacket(outIp, outPort);
+    msg.send(Udp); // send the bytes to the SLIP stream
+    Udp.endPacket(); // mark the end of the OSC Packet
+    msg.empty(); // free space occupied by message
   }
-  if (pin == 3){
-    msg.setAddress("/switch/3");
-  }
-  if (pin == 4){
-    msg.setAddress("/switch/4");
-  }
-  if (pin == 5){
-    msg.setAddress("/switch/5");
-  }
-  msg.add((int32_t)sensorReading);
-  Udp.beginPacket(outIp, outPort);
-  msg.send(Udp); // send the bytes to the SLIP stream
-  Udp.endPacket(); // mark the end of the OSC Packet
-  msg.empty(); // free space occupied by message
+//  if (pin == 3){
+//    msg.setAddress("/switch/3");
+//  }
+//  if (pin == 4){
+//    msg.setAddress("/switch/4");
+//  }
+//  if (pin == 5){
+//    msg.setAddress("/switch/5");
+//  }
 }
 
 void sendAnalog(int pin){
