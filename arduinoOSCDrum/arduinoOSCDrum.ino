@@ -28,7 +28,7 @@ const unsigned int outPort = 1234;
 int nbSensors = 6;
 
 // threshold : valeurs seuils à laquel les capteurs doivent envoyer une valeur. (un par type de capteur)
-const int threshold[] = {300,500};
+const int threshold[] = {200,200, 200, 200,200,200};
 
 int customDelay = 20;
 
@@ -58,31 +58,38 @@ void  initializeOSC(){
 }
 
 void sendOSC(int sensorReading, int pin){
-  
-  if (pin == 0){
-    OSCMessage msg("/switch/0"); 
+    char * y = "/switch/";
+    char x = y + pin;
+    OSCMessage msg(&x); 
     msg.add((int32_t)sensorReading);
     Udp.beginPacket(outIp, outPort);
     msg.send(Udp); // send the bytes to the SLIP stream
     Udp.endPacket(); // mark the end of the OSC Packet
     msg.empty(); // free space occupied by message
-  }
-  if (pin == 1){
-    OSCMessage msg("/switch/1");
-    msg.add((int32_t)sensorReading);
-    Udp.beginPacket(outIp, outPort);
-    msg.send(Udp); // send the bytes to the SLIP stream
-    Udp.endPacket(); // mark the end of the OSC Packet
-    msg.empty(); // free space occupied by message
-  }
-  if (pin == 2){
-    OSCMessage msg("/switch/2");
-    msg.add((int32_t)sensorReading);
-    Udp.beginPacket(outIp, outPort);
-    msg.send(Udp); // send the bytes to the SLIP stream
-    Udp.endPacket(); // mark the end of the OSC Packet
-    msg.empty(); // free space occupied by message
-  }
+//  if (pin == 0){
+//    OSCMessage msg("/switch/0"); 
+//    msg.add((int32_t)sensorReading);
+//    Udp.beginPacket(outIp, outPort);
+//    msg.send(Udp); // send the bytes to the SLIP stream
+//    Udp.endPacket(); // mark the end of the OSC Packet
+//    msg.empty(); // free space occupied by message
+//  }
+//  if (pin == 1){
+//    OSCMessage msg("/switch/1");
+//    msg.add((int32_t)sensorReading);
+//    Udp.beginPacket(outIp, outPort);
+//    msg.send(Udp); // send the bytes to the SLIP stream
+//    Udp.endPacket(); // mark the end of the OSC Packet
+//    msg.empty(); // free space occupied by message
+//  }
+//  if (pin == 2){
+//    OSCMessage msg("/switch/2");
+//    msg.add((int32_t)sensorReading);
+//    Udp.beginPacket(outIp, outPort);
+//    msg.send(Udp); // send the bytes to the SLIP stream
+//    Udp.endPacket(); // mark the end of the OSC Packet
+//    msg.empty(); // free space occupied by message
+//  }
 //  if (pin == 3){
 //    msg.setAddress("/switch/3");
 //  }
