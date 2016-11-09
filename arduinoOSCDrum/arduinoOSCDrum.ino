@@ -30,7 +30,7 @@ int nbSensors = 6;
 // threshold : valeurs seuils à laquel les capteurs doivent envoyer une valeur. (un par type de capteur)
 const int threshold[] = {200,200, 200, 200,200,200};
 
-int customDelay = 200;
+int customDelay = 20;
 
 /*
   CONFIGURATION PROGRAMME (do not change)
@@ -89,7 +89,7 @@ void setup() {
     triggerable[i]= 1;
   }
   Serial.print("threshold2:");
-  Serial.println(threshold[0]); 
+  Serial.println(threshold[0]);
 }
 
 
