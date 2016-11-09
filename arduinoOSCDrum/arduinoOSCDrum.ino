@@ -19,22 +19,21 @@ byte mac[] = { 0xDE, 0xAD, 0xAE, 0xEF, 0xFE, 0xED };
 
 // isadora IP et port
 int isDHCP = 0;
-IPAddress outIp(10, 0, 1, 13);
+IPAddress outIp(192, 168, 0, 13);
 const unsigned int outPort = 1234;
-
 /*
   CONFIGURATION CAPTEUR (à adapter)
 */
 // nombre de piezo devant être lu
-int nbSensors = 2;
+int nbSensors = 6;
 
-// threshold : valeurs seuils à laquel les capteurs doivent envoyer une valeur. (une par type de capteur)
-const int threshold[] = {200,220};
+// threshold : valeurs seuils à laquel les capteurs doivent envoyer une valeur. (un par type de capteur)
+const int threshold[] = {200,200, 200, 200,200,200};
 
 int customDelay = 200;
 
 /*
-  CONFIGURATION PROGRAMME (à adapter)
+  CONFIGURATION PROGRAMME (do not change)
 */
 int triggerable[] = {};
 
@@ -58,13 +57,15 @@ void  initializeOSC(){
   Udp.begin(8888);
 }
 
-void sendOSC(int sensorValue, int pin){
-  OSCMessage msg("/switch/" + pin);
-  msg.add((int32_t)sensorValue);
-  Udp.beginPacket(outIp, outPort);
-  msg.send(Udp); // send the bytes to the SLIP stream
-  Udp.endPacket(); // mark the end of the OSC Packet
-  msg.empty(); // free space occupied by message
+void sendOSC(int sensorReading, int pin){
+    char address[10];
+    sprintf(address, "/switch/%d", pin);
+    OSCMessage msg(address);
+    msg.add((int32_t)sensorReading);
+    Udp.beginPacket(outIp, outPort);
+    msg.send(Udp); // send the bytes to the SLIP stream
+    Udp.endPacket(); // mark the end of the OSC Packet
+    msg.empty(); // free space occupied by message
 }
 
 void sendAnalog(int pin, int sensorValue){
@@ -107,7 +108,3 @@ void loop(){
   }
    delay(customDelay);
 }
-
-
-
-
