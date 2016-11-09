@@ -58,38 +58,31 @@ void  initializeOSC(){
 }
 
 void sendOSC(int sensorReading, int pin){
-    char * y = "/switch/";
-    char x = y + pin;
-    OSCMessage msg(&x); 
-    msg.add((int32_t)sensorReading);
-    Udp.beginPacket(outIp, outPort);
-    msg.send(Udp); // send the bytes to the SLIP stream
-    Udp.endPacket(); // mark the end of the OSC Packet
-    msg.empty(); // free space occupied by message
-//  if (pin == 0){
-//    OSCMessage msg("/switch/0"); 
-//    msg.add((int32_t)sensorReading);
-//    Udp.beginPacket(outIp, outPort);
-//    msg.send(Udp); // send the bytes to the SLIP stream
-//    Udp.endPacket(); // mark the end of the OSC Packet
-//    msg.empty(); // free space occupied by message
-//  }
-//  if (pin == 1){
-//    OSCMessage msg("/switch/1");
-//    msg.add((int32_t)sensorReading);
-//    Udp.beginPacket(outIp, outPort);
-//    msg.send(Udp); // send the bytes to the SLIP stream
-//    Udp.endPacket(); // mark the end of the OSC Packet
-//    msg.empty(); // free space occupied by message
-//  }
-//  if (pin == 2){
-//    OSCMessage msg("/switch/2");
-//    msg.add((int32_t)sensorReading);
-//    Udp.beginPacket(outIp, outPort);
-//    msg.send(Udp); // send the bytes to the SLIP stream
-//    Udp.endPacket(); // mark the end of the OSC Packet
-//    msg.empty(); // free space occupied by message
-//  }
+
+ if (pin == 0){
+   OSCMessage msg("/switch/0");
+   msg.add((int32_t)sensorReading);
+   Udp.beginPacket(outIp, outPort);
+   msg.send(Udp); // send the bytes to the SLIP stream
+   Udp.endPacket(); // mark the end of the OSC Packet
+   msg.empty(); // free space occupied by message
+ }
+ if (pin == 1){
+   OSCMessage msg("/switch/1");
+   msg.add((int32_t)sensorReading);
+   Udp.beginPacket(outIp, outPort);
+   msg.send(Udp); // send the bytes to the SLIP stream
+   Udp.endPacket(); // mark the end of the OSC Packet
+   msg.empty(); // free space occupied by message
+ }
+ if (pin == 2){
+   OSCMessage msg("/switch/2");
+   msg.add((int32_t)sensorReading);
+   Udp.beginPacket(outIp, outPort);
+   msg.send(Udp); // send the bytes to the SLIP stream
+   Udp.endPacket(); // mark the end of the OSC Packet
+   msg.empty(); // free space occupied by message
+ }
 //  if (pin == 3){
 //    msg.setAddress("/switch/3");
 //  }
@@ -133,7 +126,3 @@ void loop(){
   }
    delay(customDelay);
 }
-
-
-
-
