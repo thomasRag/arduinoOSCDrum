@@ -11,7 +11,7 @@ EthernetUDP Udp;
 */
 
 // mode osc ou serial pour les test
-const int isOSCmode = 0; // mode 0: serial, mode 1: osc
+const int isOSCmode = 1; // mode 0: serial, mode 1: osc
 
 // Arduino IP et mac adress
 IPAddress ip(192, 168, 0, 7);
@@ -58,40 +58,14 @@ void  initializeOSC(){
 }
 
 void sendOSC(int sensorReading, int pin){
-
- if (pin == 0){
-   OSCMessage msg("/switch/0");
-   msg.add((int32_t)sensorReading);
-   Udp.beginPacket(outIp, outPort);
-   msg.send(Udp); // send the bytes to the SLIP stream
-   Udp.endPacket(); // mark the end of the OSC Packet
-   msg.empty(); // free space occupied by message
- }
- if (pin == 1){
-   OSCMessage msg("/switch/1");
-   msg.add((int32_t)sensorReading);
-   Udp.beginPacket(outIp, outPort);
-   msg.send(Udp); // send the bytes to the SLIP stream
-   Udp.endPacket(); // mark the end of the OSC Packet
-   msg.empty(); // free space occupied by message
- }
- if (pin == 2){
-   OSCMessage msg("/switch/2");
-   msg.add((int32_t)sensorReading);
-   Udp.beginPacket(outIp, outPort);
-   msg.send(Udp); // send the bytes to the SLIP stream
-   Udp.endPacket(); // mark the end of the OSC Packet
-   msg.empty(); // free space occupied by message
- }
-//  if (pin == 3){
-//    msg.setAddress("/switch/3");
-//  }
-//  if (pin == 4){
-//    msg.setAddress("/switch/4");
-//  }
-//  if (pin == 5){
-//    msg.setAddress("/switch/5");
-//  }
+    char address[10];
+    sprintf(address, "/switch/%d", pin);
+    OSCMessage msg(address);
+    msg.add((int32_t)sensorReading);
+    Udp.beginPacket(outIp, outPort);
+    msg.send(Udp); // send the bytes to the SLIP stream
+    Udp.endPacket(); // mark the end of the OSC Packet
+    msg.empty(); // free space occupied by message
 }
 
 void sendAnalog(int pin){
